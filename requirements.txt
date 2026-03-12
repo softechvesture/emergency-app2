@@ -1,0 +1,10 @@
+flask
+flask_sqlalchemy
+flask_bcrypt
+flask-cors
+flask-restful
+pymysql
+python-dotenv
+textblob
+gunicorn
+cryptography
