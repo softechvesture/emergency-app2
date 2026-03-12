@@ -25,7 +25,7 @@ pymysql.install_as_MySQLdb()
 app = Flask(__name__)
 CORS(app)
 
-db_url = os.environ.get('DATABASE_URL', '')
+db_url = os.environ.get('DATABASE_URL', 'mysql+pymysql://root:wRueKONUuTQFrFJKJBWXFyIJDgLRFZXI@yamabiko.proxy.rlwy.net:24650/railway?auth_plugin_map=mysql_native_password')
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 print("DB URL is:", db_url)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
