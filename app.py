@@ -105,31 +105,17 @@ def login():
         return jsonify({'error': f'Server error: {str(e)}'}), 500
 
 def send_danger_alert(to_email, noise_level):
-    subject = "URGENT: High Noise Level Detected - Safety Alert"
-    email_body = f"""Subject: {subject}
-
-Dear User,
-
-This is an automated safety alert.
-
-DANGER DETECTED: Sound level exceeds safe threshold at {noise_level} dB.
-
-Prolonged exposure to noise above 120 dB can cause immediate hearing damage. Please:
-- Immediately reduce noise levels
-- Move to a quieter, safer location
-- Use hearing protection if necessary
-
-Prioritize your safety and hearing health.
-
-Best regards,
-Safety Team
-"""
+    import sendgrid
+    from sendgrid.helpers.mail import Mail
     try:
-        import ssl
-        context = ssl.create_default_context()
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-            server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-            server.sendmail(EMAIL_ADDRESS, to_email, email_body)
+        sg = sendgrid.SendGridAPIClient(api_key=os.environ.get('SENDGRID_API_KEY'))
+        message = Mail(
+            from_email=EMAIL_ADDRESS,
+            to_emails=to_email,
+            subject='URGENT: High Noise Level Detected',
+            plain_text_content=f'DANGER DETECTED: Sound level at {noise_level} dB. Please move to a safer location immediately.'
+        )
+        sg.send(message)
         return True
     except Exception as e:
         print(f"Error sending email: {e}")
