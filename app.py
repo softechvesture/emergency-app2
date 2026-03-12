@@ -25,7 +25,9 @@ pymysql.install_as_MySQLdb()
 app = Flask(__name__)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+db_url = os.environ.get('DATABASE_URL', '')
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url
+print("DB URL is:", db_url)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'fallback-secret')
 bcrypt = Bcrypt(app)
